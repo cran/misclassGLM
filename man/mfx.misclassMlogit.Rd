@@ -4,13 +4,21 @@
 \alias{mfx.misclassMlogit}
 \title{Compute Marginal Effects for 'misclassMlogit' Fits}
 \usage{
-mfx.misclassMlogit(w, x.mean = TRUE, rev.dum = TRUE, outcome = 2,
-  baseoutcome = 1, digits = 3, ...)
+mfx.misclassMlogit(
+  w,
+  x.mean = TRUE,
+  rev.dum = TRUE,
+  outcome = 2,
+  baseoutcome = 1,
+  digits = 3,
+  ...
+)
 }
 \arguments{
 \item{w}{a fitted object of class inheriting from 'misclassMlogit'.}
 
-\item{x.mean}{logical, if true computes marginal effects at mean, otherwise average marginal effects.}
+\item{x.mean}{logical, if true computes marginal effects at mean, otherwise average marginal
+effects.}
 
 \item{rev.dum}{logical, if true, computes differential effects for switch from 0 to 1.}
 
@@ -28,4 +36,3 @@ Obtain marginal effects.
 \seealso{
 \code{\link{misclassMlogit}}
 }
-

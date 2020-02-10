@@ -11,6 +11,7 @@
 #include <R_ext/Error.h>
 #include <R_ext/Applic.h>
 #include <Rmath.h>
+#include <R_ext/Rdynload.h>
 
 struct dataset {
 	double *y;
@@ -69,6 +70,8 @@ double _cfgaussValidation(int p, double *par, void *ex) {
 
 	return(ret);
 }
+
+extern SEXP cfgaussValidation(SEXP Beta, SEXP Y, SEXP X, SEXP W, SEXP SetM);
 
 SEXP cfgaussValidation(SEXP Beta, SEXP Y, SEXP X, SEXP W, SEXP SetM)
 {
@@ -224,6 +227,9 @@ void _cggaussValidation(int p, double *par, double *ret, void *ex) {
 	free(predicts);
 }
 
+
+extern SEXP cggaussValidation(SEXP Beta, SEXP Y, SEXP X, SEXP W, SEXP SetM);
+
 SEXP cggaussValidation(SEXP Beta, SEXP Y, SEXP X, SEXP W, SEXP SetM)
 {
 	double *y=NUMERIC_POINTER(Y);
@@ -307,6 +313,8 @@ double _cflogitValidation(int p, double *par, void *ex) {
 
 	return(ret);
 }
+
+extern SEXP cflogitValidation(SEXP Beta, SEXP Y, SEXP X, SEXP W, SEXP SetM);
 
 SEXP cflogitValidation(SEXP Beta, SEXP Y, SEXP X, SEXP W, SEXP SetM)
 {
@@ -429,6 +437,8 @@ void _cglogitValidation(int p, double *par, double *ret, void *ex) {
 	free(eta);
 }
 
+extern SEXP cglogitValidation(SEXP Beta, SEXP Y, SEXP X, SEXP W, SEXP SetM);
+
 SEXP cglogitValidation(SEXP Beta, SEXP Y, SEXP X, SEXP W, SEXP SetM)
 {
 	double *y=NUMERIC_POINTER(Y);
@@ -534,6 +544,8 @@ double _cfmlogitValidation(int p, double *par, void *ex) {
 
   return(ret);
 }
+
+extern SEXP cfmlogitValidation(SEXP Beta, SEXP Y, SEXP X, SEXP W, SEXP SetM);
 
 SEXP cfmlogitValidation(SEXP Beta, SEXP Y, SEXP X, SEXP W, SEXP SetM)
 {
@@ -682,6 +694,8 @@ void _cgmlogitValidation(int p, double *par, double *ret, void *ex) {
   free(tmp2);
 }
 
+extern SEXP cgmlogitValidation(SEXP Beta, SEXP Y, SEXP X, SEXP W, SEXP SetM);
+
 SEXP cgmlogitValidation(SEXP Beta, SEXP Y, SEXP X, SEXP W, SEXP SetM)
 {
   double *y=NUMERIC_POINTER(Y);
@@ -721,6 +735,8 @@ SEXP cgmlogitValidation(SEXP Beta, SEXP Y, SEXP X, SEXP W, SEXP SetM)
 
   return(Ret);
 }
+
+extern SEXP get_link_mlogit(SEXP Link, SEXP Link_d_eta, SEXP Link_d2_eta, SEXP Y, SEXP Eta, SEXP Theta);
 
 SEXP get_link_mlogit(SEXP Link, SEXP Link_d_eta, SEXP Link_d2_eta, SEXP Y, SEXP Eta, SEXP Theta)
 {
@@ -789,6 +805,8 @@ SEXP get_link_mlogit(SEXP Link, SEXP Link_d_eta, SEXP Link_d2_eta, SEXP Y, SEXP 
 
   return(R_NilValue);
 }
+
+extern SEXP get_Gdeta(SEXP G_d_eta, SEXP G_d_eta_2, SEXP Eta_u, SEXP Y, SEXP W, SEXP link_derivs, SEXP Theta, SEXP K);
 
 SEXP get_Gdeta(SEXP G_d_eta, SEXP G_d_eta_2, SEXP Eta_u, SEXP Y, SEXP W, SEXP link_derivs, SEXP Theta, SEXP K)
 {
@@ -902,3 +920,23 @@ SEXP get_Gdeta(SEXP G_d_eta, SEXP G_d_eta_2, SEXP Eta_u, SEXP Y, SEXP W, SEXP li
 
   return(R_NilValue);
 }
+
+
+static const R_CallMethodDef callMethods[] = {
+  {"cfgaussValidation", (DL_FUNC) &cfgaussValidation, 5},
+  {"cggaussValidation", (DL_FUNC) &cggaussValidation, 5},
+  {"cflogitValidation", (DL_FUNC) &cflogitValidation, 5},
+  {"cglogitValidation", (DL_FUNC) &cglogitValidation, 5},
+  {"cfmlogitValidation", (DL_FUNC) &cfmlogitValidation, 5},
+  {"cgmlogitValidation", (DL_FUNC) &cgmlogitValidation, 5},
+  {"get_link_mlogit", (DL_FUNC)  &get_link_mlogit, 6},
+  {"get_Gdeta", (DL_FUNC) &get_Gdeta, 8},
+  {NULL, NULL, 0}
+};
+
+void R_init_misclassGLM(DllInfo *info)
+{
+  R_registerRoutines(info, NULL, callMethods, NULL, NULL);
+  R_useDynamicSymbols(info, FALSE);
+}
+

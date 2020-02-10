@@ -5,11 +5,13 @@
 #'
 #' @param Y a matrix of 0s and 1s, indicating the target class. This is the dependent variable.
 #' @param X a matrix containing the independent variables
-#' @param setM matrix, rows containing potential patterns for a misclassed (latent) covariate M in any coding for a
-#'        categorical independent variable, e.g. dummy coding.
-#' @param P probabilities corresponding to each of the potential pattern conditional on the other covariates denoted in x.
+#' @param setM matrix, rows containing potential patterns for a misclassed (latent) covariate M in
+#'        any coding for a categorical independent variable, e.g. dummy coding.
+#' @param P probabilities corresponding to each of the potential pattern conditional on the other
+#'        covariates denoted in x.
 #' @param na.action how to treat NAs
-#' @param control options for the optimization procedure (see \code{\link{optim}}, \code{\link{ucminf}} for options and details).
+#' @param control options for the optimization procedure (see \code{\link{optim}},
+#'        \code{\link{ucminf}} for options and details).
 #' @param par (optional) starting parameter vector
 #' @param baseoutcome reference outcome class
 #' @param x logical, add covariates matrix to result?
@@ -88,9 +90,9 @@ misclassMlogit <- function(Y, X, setM, P,
   control <- do.call("make.control", control)
 
   # log-likelihood definieren
-    f <- cfmlogitValidation
+    f <- fmlogitValidation
     if (control$method == "BFGS" | control$method == "BFGS2" | control$method == "CG" | control$method == "nlm") {
-      g <- cgmlogitValidation
+      g <- gmlogitValidation
     }
 
     # starting parameters
@@ -158,16 +160,17 @@ misclassMlogit <- function(Y, X, setM, P,
 #' Obtains predictions
 #'
 #' @usage ## S3 method for class 'misclassMlogit'
-#'        \method{predict}{misclassMlogit}(object, X, P = NULL, type = c("link", "response"), na.action = na.pass, ...)
+#'        \method{predict}{misclassMlogit}(object, X, P = NULL, type = c("link", "response"),
+#'        na.action = na.pass, ...)
 #' @param object a fitted object of class inheriting from 'misclassMlogit'.
 #' @param X matrix of fixed covariates.
 #' @param P a-posteriori probabilities for the true values of the misclassified variable. If provided,
-#'        the conditional expectation on X,P is computed, otherwise a set of marginal predictions is provided, one for
-#'        each alternative.
+#'        the conditional expectation on X,P is computed, otherwise a set of marginal predictions is
+#'        provided, one for each alternative.
 #' @param type the type of prediction required. The default is on the scale of the linear predictors;
 #'        the alternative "response" is on the scale of the response variable.
-#'        Thus for a default binomial model the default predictions are of log-odds (probabilities on logit scale) and
-#'        type = "response" gives the predicted probabilities.
+#'        Thus for a default binomial model the default predictions are of log-odds (probabilities
+#'        on logit scale) and type = "response" gives the predicted probabilities.
 #'
 #'        The value of this argument can be abbreviated.
 #' @param na.action function determining what should be done with missing values in \code{newdata}.
@@ -175,7 +178,8 @@ misclassMlogit <- function(Y, X, setM, P,
 #' @param \dots additional arguments (not used at the moment)
 #' @seealso \code{\link{misclassMlogit}}
 #' @export
-predict.misclassMlogit <- function(object, X, P = NULL, type = c("link", "response"), na.action = na.pass, ...) {
+predict.misclassMlogit <- function(object, X, P = NULL, type = c("link", "response"),
+                                   na.action = na.pass, ...) {
 
   type <- match.arg(type)
 
@@ -220,11 +224,13 @@ get.eta <- function(X, beta, k) {
 #' @param ret a fitted object of class inheriting from 'misclassMlogit'.
 #' @param Y a matrix of 0s and 1s, indicating the target class. This is the dependent variable.
 #' @param X a matrix containing the independent variables.
-#' @param Pmodel a fitted model (e.g. of class 'GLM' or 'mlogit') to implicitly produce variations of the predicted
-#'        true values probabilities. (Usually conditional on the observed misclassified values and additional covariates.)
+#' @param Pmodel a fitted model (e.g. of class 'GLM' or 'mlogit') to implicitly produce variations
+#'        of the predicted true values probabilities. (Usually conditional on the observed
+#'        misclassified values and additional covariates.)
 #' @param PX covariates matrix suitable for predicting probabilities from \code{Pmodel},
 #'        usually including the mismeasured covariate.
-#' @param boot.fraction fraction of sample to be used for estimating the bootstrapped standard errors, for speedup.
+#' @param boot.fraction fraction of sample to be used for estimating the bootstrapped standard
+#'        errors, for speedup.
 #' @param repetitions number of bootstrap samples to be drown.
 #' @seealso \code{\link{misclassMlogit}}
 #' @export
@@ -265,7 +271,7 @@ boot.misclassMlogit <- function(ret, Y, X, Pmodel, PX,
 
 #' @export
 summary.misclassMlogit <- function(object, ...) {
-  b <- coef(object)
+  b <- coef(object, fixed = TRUE)
   std.err <- sqrt(diag(vcov(object)))
   z <- b / std.err
   p <- 2 * (1 - pnorm(abs(z)))
@@ -330,7 +336,7 @@ print.summary.misclassMlogit <- function(x, digits = max(3L, getOption("digits")
 vcov.misclassMlogit <- function(object, ...) {
   if (is.null(object$CoVar)) {
     ok <- try(covmat <- chol2inv(chol(object$optim$hessian)), silent = TRUE)
-    if (class(ok) == "try-error") {
+    if (inherits(ok, "try-error")) {
       print(ok[1])
       return(NULL)
     }
@@ -346,7 +352,8 @@ vcov.misclassMlogit <- function(object, ...) {
 #' Obtain marginal effects.
 #'
 #' @param w a fitted object of class inheriting from 'misclassMlogit'.
-#' @param x.mean logical, if true computes marginal effects at mean, otherwise average marginal effects.
+#' @param x.mean logical, if true computes marginal effects at mean, otherwise average marginal
+#'        effects.
 #' @param rev.dum logical, if true, computes differential effects for switch from 0 to 1.
 #' @param outcome for which the ME should be computed.
 #' @param baseoutcome base outcome, e.g. reference class of the model.
@@ -392,11 +399,13 @@ mfx.misclassMlogit <- function(w, x.mean = TRUE, rev.dum = TRUE, outcome = 2, ba
   if (baseoutcome > outcome) {
     pg <- xb[outcome] / (1 + sum(xb))
     dr <- diag(1, K, K) + (1 - 2 * pg) * bx[[outcome]]
-    va <- (pg - pg^2)^2 * dr %*% vcov(w)[(0:(K - 1)) * alt + outcome,(0:(K - 1)) * alt + outcome] %*% t(dr)
+    va <- (pg - pg^2)^2 * dr %*% vcov(w)[(0:(K - 1)) * alt + outcome,
+                                         (0:(K - 1)) * alt + outcome] %*% t(dr)
   } else if (baseoutcome < outcome) {
     pg <- xb[outcome - 1] / (1 + sum(xb))
     dr <- diag(1, K, K) + (1 - 2 * pg) * bx[[outcome - 1]]
-    va <- (pg - pg^2)^2 * dr %*% vcov(w)[(0:(K - 1)) * alt + outcome - 1, (0:(K - 1)) * alt + outcome - 1] %*% t(dr)
+    va <- (pg - pg^2)^2 * dr %*% vcov(w)[(0:(K - 1)) * alt + outcome - 1,
+                                         (0:(K - 1)) * alt + outcome - 1] %*% t(dr)
   }
 
   se <- sqrt(diag(va))
@@ -418,13 +427,15 @@ mfx.misclassMlogit <- function(w, x.mean = TRUE, rev.dum = TRUE, outcome = 2, ba
           pr1 <- xb1[outcome] / (1 + sum(xb1))
           pr0 <- xb0[outcome] / (1 + sum(xb0))
           dr2 <- (pr1 - pr1^2) %*% t(x.d1) - (pr0 - pr0^2) %*% t(x.d0)
-          va2 <- dr2 %*% vcov(w)[(0:(K - 1)) * alt + outcome, (0:(K - 1)) * alt + outcome] %*% t(dr2)
+          va2 <- dr2 %*% vcov(w)[(0:(K - 1)) * alt + outcome,
+                                 (0:(K - 1)) * alt + outcome] %*% t(dr2)
         } else if (baseoutcome < outcome) {
           pr1 <- xb1[outcome - 1] / (1 + sum(xb1))
           pr0 <- xb0[outcome - 1] / (1 + sum(xb0))
           dr2 <- (pr1 - pr1^2) %*% t(x.d1) - (pr0 - pr0^2) %*% t(x.d0)
 
-          va2 <- dr2 %*% vcov(w)[(0:(K - 1)) * alt + outcome - 1, (0:(K - 1)) * alt + outcome - 1] %*% t(dr2)
+          va2 <- dr2 %*% vcov(w)[(0:(K - 1)) * alt + outcome - 1,
+                                 (0:(K - 1)) * alt + outcome - 1] %*% t(dr2)
         }
         me[i] <- pr1 - pr0
 
@@ -456,10 +467,12 @@ mfx.misclassMlogit <- function(w, x.mean = TRUE, rev.dum = TRUE, outcome = 2, ba
 #' @param const constants
 #' @param alpha parameters for X
 #' @param beta parameters for M(1)
-#' @param beta2 parameters for M2, if NULL, M is a binary covariate, otherwise a three-valued categorical
+#' @param beta2 parameters for M2, if NULL, M is a binary covariate, otherwise a three-valued
+#'        categorical.
 #' @seealso \code{\link{misclassMlogit}}
 #' @export
-simulate_mlogit_dataset <- function(n = 1000, const = c(0, 0), alpha = c(1, 2), beta = -2 * c(1, 2), beta2 = NULL) {
+simulate_mlogit_dataset <- function(n = 1000, const = c(0, 0), alpha = c(1, 2),
+                                    beta = -2 * c(1, 2), beta2 = NULL) {
   set.seed(30)
 
   X <- rnorm(n, 0, 2)

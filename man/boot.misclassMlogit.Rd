@@ -4,8 +4,15 @@
 \alias{boot.misclassMlogit}
 \title{Compute Bootstrapped Standard Errors for \code{misclassMlogit} Fits}
 \usage{
-boot.misclassMlogit(ret, Y, X, Pmodel, PX, boot.fraction = 1,
-  repetitions = 1000)
+boot.misclassMlogit(
+  ret,
+  Y,
+  X,
+  Pmodel,
+  PX,
+  boot.fraction = 1,
+  repetitions = 1000
+)
 }
 \arguments{
 \item{ret}{a fitted object of class inheriting from 'misclassMlogit'.}
@@ -14,13 +21,15 @@ boot.misclassMlogit(ret, Y, X, Pmodel, PX, boot.fraction = 1,
 
 \item{X}{a matrix containing the independent variables.}
 
-\item{Pmodel}{a fitted model (e.g. of class 'GLM' or 'mlogit') to implicitly produce variations of the predicted
-true values probabilities. (Usually conditional on the observed misclassified values and additional covariates.)}
+\item{Pmodel}{a fitted model (e.g. of class 'GLM' or 'mlogit') to implicitly produce variations
+of the predicted true values probabilities. (Usually conditional on the observed
+misclassified values and additional covariates.)}
 
 \item{PX}{covariates matrix suitable for predicting probabilities from \code{Pmodel},
 usually including the mismeasured covariate.}
 
-\item{boot.fraction}{fraction of sample to be used for estimating the bootstrapped standard errors, for speedup.}
+\item{boot.fraction}{fraction of sample to be used for estimating the bootstrapped standard
+errors, for speedup.}
 
 \item{repetitions}{number of bootstrap samples to be drown.}
 }
@@ -30,4 +39,3 @@ Obtain bootstrapped standard errors.
 \seealso{
 \code{\link{misclassMlogit}}
 }
-

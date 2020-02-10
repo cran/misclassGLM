@@ -4,18 +4,21 @@
 #' using additional side information on the misclassification process
 #'
 #' @param Y a vector of integers or numerics. This is the dependent variable.
-#' @param X a matrix containing the independent variables
-#' @param setM matrix, rows containing potential patterns for a misclassified (latent) covariate M in any coding for a
-#'        categorical independent variable, e.g. dummy coding.
-#' @param P probabilities corresponding to each of the potential pattern conditional on the other covariates denoted in x.
+#' @param X a matrix containing the independent variables.
+#' @param P probabilities corresponding to each of the potential pattern conditional on the other
+#'        covariates denoted in x.
 #' @param na.action how to treat NAs
 #' @param family a description of the error distribution and link function to be used in the model.
-#'        This can be a character string naming a family function, a family function or the result of a call to a
-#'        family function. (See \code{\link{family}} for details of family functions.)
-#' @param control options for the optimization procedure (see \code{\link{optim}}, \code{\link{ucminf}} for options and details).
+#'        This can be a character string naming a family function, a family function or the result
+#'        of a call to a family function. (See \code{\link{family}} for details of family functions.)
+#' @param control options for the optimization procedure (see \code{\link{optim}},
+#'        \code{\link{ucminf}} for options and details).
 #' @param par (optional) starting parameter vector
+#' @param setM (optional) matrix, rows containing potential patterns for a misclassified (latent) covariate M
+#'        in any coding for a categorical independent variable, e.g. dummy coding (default: Identity).
 #' @param x logical, add covariates matrix to result?
-#' @param robust logical, if true the computed asymptotic standard errors are replaced by their robust counterparts
+#' @param robust logical, if true the computed asymptotic standard errors are replaced by their
+#'        robust counterparts.
 #' @examples
 #' ## simulate data
 #' \donttest{
@@ -88,19 +91,22 @@ misclassGLM <- function(Y, X, setM, P,
 
     # Validation
     if (family$family == "gaussian") {
-      f <- cfgaussValidation
-      if (control$method == "BFGS" || control$method == "BFGS2" || control$method == "CG" || control$method == "nlm") {
-        g <- cggaussValidation
+      f <- fgaussValidation
+      if (control$method == "BFGS" || control$method == "BFGS2" || control$method == "CG" ||
+          control$method == "nlm") {
+        g <- ggaussValidation
       }
     } else if (family$family == "binomial") {
       if (family$link == "logit") {
-        f <- cflogitValidation
-        if (control$method == "BFGS" || control$method == "BFGS2" || control$method == "CG" || control$method == "nlm") {
-          g <- cglogitValidation
+        f <- flogitValidation
+        if (control$method == "BFGS" || control$method == "BFGS2" || control$method == "CG" ||
+            control$method == "nlm") {
+          g <- glogitValidation
         }
       } else if (family$link == "probit") {
         f <- fprobitValidation
-        if (control$method == "BFGS" || control$method == "BFGS2" || control$method == "CG" || control$method == "nlm") {
+        if (control$method == "BFGS" || control$method == "BFGS2" || control$method == "CG" ||
+            control$method == "nlm") {
           g <- gprobitValidation
         }
       } else {
@@ -119,7 +125,8 @@ misclassGLM <- function(Y, X, setM, P,
         par <- c(par, 0.5)
         par[1:(ncol(X) + 1)] <- lm.fit(x = cbind(rep.int(1, nrow(X)), X), y = Y)$coefficients
       } else {
-        par[1:(ncol(X) + 1)] <- glm.fit(x = cbind(rep.int(1, nrow(X)), X), y = Y, family = family)$coefficients
+        par[1:(ncol(X) + 1)] <- glm.fit(x = cbind(rep.int(1, nrow(X)), X), y = Y,
+                                        family = family)$coefficients
       }
     } else {
       if (family$family == "gaussian") length.par <- length.par + 1
@@ -174,16 +181,17 @@ misclassGLM <- function(Y, X, setM, P,
 #' Obtains predictions
 #'
 #' @usage ## S3 method for class 'misclassGLM'
-#'        \method{predict}{misclassGLM}(object, X, P = NULL, type = c("link", "response"), na.action = na.pass, ...)
+#'        \method{predict}{misclassGLM}(object, X, P = NULL, type = c("link", "response"),
+#'                                      na.action = na.pass, ...)
 #' @param object a fitted object of class inheriting from 'misclassGLM'.
 #' @param X matrix of fixed covariates
-#' @param P a-posteriori probabilities for the true values of the misclassified variable. If provided,
-#'        the conditional expectation on X,P is computed, otherwise a set of marginal predictions is provided, one for
-#'        each alternative.
+#' @param P a-posteriori probabilities for the true values of the misclassified variable.
+#'        If provided, the conditional expectation on X,P is computed, otherwise a set of marginal
+#'        predictions is provided, one for each alternative.
 #' @param type the type of prediction required. The default is on the scale of the linear predictors;
 #'        the alternative "response" is on the scale of the response variable.
-#'        Thus for a default binomial model the default predictions are of log-odds (probabilities on logit scale) and
-#'        type = "response" gives the predicted probabilities.
+#'        Thus for a default binomial model the default predictions are of log-odds
+#'        (probabilities on logit scale) and type = "response" gives the predicted probabilities.
 #'
 #'        The value of this argument can be abbreviated.
 #' @param na.action function determining what should be done with missing values in \code{newdata}.
@@ -191,7 +199,8 @@ misclassGLM <- function(Y, X, setM, P,
 #' @param \dots additional arguments (not used at the moment)
 #' @seealso \code{\link{misclassGLM}}
 #' @export
-predict.misclassGLM <- function(object, X, P = NULL, type = c("link", "response"), na.action = na.pass, ...) {
+predict.misclassGLM <- function(object, X, P = NULL, type = c("link", "response"),
+                                na.action = na.pass, ...) {
 
   type <- match.arg(type)
 
@@ -215,11 +224,13 @@ predict.misclassGLM <- function(object, X, P = NULL, type = c("link", "response"
 #' @param ret a fitted object of class inheriting from 'misclassGLM'.
 #' @param Y a vector of integers or numerics. This is the dependent variable.
 #' @param X a matrix containing the independent variables.
-#' @param Pmodel a fitted model (e.g. of class 'GLM' or 'mlogit') to implicitly produce variations of the predicted
-#'        true values probabilities. (Usually conditional on the observed misclassified values and additional covariates.)
+#' @param Pmodel a fitted model (e.g. of class 'GLM' or 'mlogit') to implicitly produce variations
+#'        of the predicted true values probabilities. (Usually conditional on the observed
+#'        misclassified values and additional covariates.)
 #' @param PX covariates matrix suitable for predicting probabilities from \code{Pmodel},
 #'        usually including the mismeasured covariate.
-#' @param boot.fraction fraction of sample to be used for estimating the bootstrapped standard errors, for speedup.
+#' @param boot.fraction fraction of sample to be used for estimating the bootstrapped standard
+#'        errors, for speedup.
 #' @param repetitions number of bootstrap samples to be drown.
 #' @seealso \code{\link{misclassGLM}}
 #' @export
@@ -273,7 +284,7 @@ estimateRobustSE <- function(object, Y, X, P) {
   if (object$SEtype != "standard") stop("robust errors require usual computation of SE.")
 
   ok <- try(covmat <- chol2inv(chol(object$optim$hessian)), silent = TRUE)
-  if (class(ok) == "try-error") {
+  if (inherits(ok, "try-error")) {
     print(ok[1])
     return(NULL)
   }
@@ -293,11 +304,12 @@ estimateRobustSE <- function(object, Y, X, P) {
   }
   Lstrich <- matrix(rep.int(0, length(object$optim$par)^2), ncol = length(object$optim$par))
   for (i in 1:nrow(X)) {
-    if (class(Y) == "matrix") {
+    if (inherits(Y, "matrix")) {
       Lstrich <- Lstrich + tcrossprod(g(object$optim$par, Y[i,, drop = FALSE], X[i,, drop = FALSE],
                                         P[i,, drop = FALSE], object$setM))
     } else {
-      Lstrich <- Lstrich + tcrossprod(g(object$optim$par, Y[i], X[i,, drop = FALSE], P[i,, drop = FALSE], object$setM))
+      Lstrich <- Lstrich + tcrossprod(g(object$optim$par, Y[i], X[i,, drop = FALSE],
+                                        P[i,, drop = FALSE], object$setM))
     }
   }
   object$CoVar <- covmat %*% Lstrich %*% covmat
@@ -312,7 +324,7 @@ summary.misclassGLM <- function(object, ...) {
 
   if (is.null(object$CoVar)) {
     ok <- try(covmat <- chol2inv(chol(object$optim$hessian)), silent = TRUE)
-    if (class(ok) == "try-error") {
+    if (inherits(ok, "try-error")) {
       print(ok[1])
       return(NULL)
     }
@@ -332,7 +344,8 @@ summary.misclassGLM <- function(object, ...) {
     pvalue <- rep_len(0.0, p)
     for (j in 1:p) {
       tmp <- object$boot.beta[, j]
-      pvalue[j] <- 2 * min(length(which(tmp <= 0)), length(which(tmp >= 0))) / (nrow(object$boot.beta))
+      pvalue[j] <- 2 * min(length(which(tmp <= 0)),
+                           length(which(tmp >= 0))) / (nrow(object$boot.beta))
     }
   }
   coef.table <- cbind(coef.p, s.err, tvalue, pvalue)
@@ -384,7 +397,8 @@ df.residual.misclassGLM <- function(object, ...) {
 #' Obtain marginal Effects.
 #'
 #' @param w a fitted object of class inheriting from 'misclassGLM'.
-#' @param x.mean logical, if true computes marginal effects at mean, otherwise average marginal effects.
+#' @param x.mean logical, if true computes marginal effects at mean, otherwise average marginal
+#'               effects.
 #' @param rev.dum logical, if true, computes differential effects for switch from 0 to 1.
 #' @param digits number of digits to be presented in output.
 #' @param \dots further arguments passed to or from other functions.
@@ -429,7 +443,8 @@ mfx.misclassGLM <- function(w, x.mean = TRUE, rev.dum = TRUE, digits = 3, ...) {
 
     if (rev.dum) {
       for (i in 1:ncol(w$x)) {
-        if (identical(sort(unique(w$x[,i])), c(0, 1)) || ("misclassGLM" %in% class(w) && i >= ncol(w$x) - dim(w$setM)[2]) ) {
+        if (identical(sort(unique(w$x[,i])), c(0, 1)) ||
+            ("misclassGLM" %in% class(w) && i >= ncol(w$x) - dim(w$setM)[2]) ) {
           x.d1 <- x.bar; x.d1[i, 1] <- 1
           x.d0 <- x.bar; x.d0[i, 1] <- 0
           if (link == "probit") {
@@ -474,11 +489,13 @@ mfx.misclassGLM <- function(w, x.mean = TRUE, rev.dum = TRUE, digits = 3, ...) {
 #' @param const constant
 #' @param alpha parameter for X
 #' @param beta parameter for M(1)
-#' @param beta2 parameter for M2, if NULL, M is a binary covariate, otherwise a three-valued categorical
+#' @param beta2 parameter for M2, if NULL, M is a binary covariate, otherwise a three-valued
+#'              categorical
 #' @param logit logical, if true logit regression, otherwise Gaussian regression
 #' @seealso \code{\link{misclassGLM}}
 #' @export
-simulate_GLM_dataset <- function(n = 1000, const = 0, alpha = 1, beta = -2, beta2 = NULL, logit = FALSE) {
+simulate_GLM_dataset <- function(n = 50000, const = 0, alpha = 1, beta = -2, beta2 = NULL,
+                                 logit = FALSE) {
   set.seed(30)
 
   X <- rnorm(n, 0, 2)

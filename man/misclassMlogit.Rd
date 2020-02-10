@@ -4,22 +4,33 @@
 \alias{misclassMlogit}
 \title{Mlogit estimation under misclassified covariate}
 \usage{
-misclassMlogit(Y, X, setM, P, na.action = na.omit, control = list(),
-  par = NULL, baseoutcome = NULL, x = FALSE)
+misclassMlogit(
+  Y,
+  X,
+  setM,
+  P,
+  na.action = na.omit,
+  control = list(),
+  par = NULL,
+  baseoutcome = NULL,
+  x = FALSE
+)
 }
 \arguments{
 \item{Y}{a matrix of 0s and 1s, indicating the target class. This is the dependent variable.}
 
 \item{X}{a matrix containing the independent variables}
 
-\item{setM}{matrix, rows containing potential patterns for a misclassed (latent) covariate M in any coding for a
-categorical independent variable, e.g. dummy coding.}
+\item{setM}{matrix, rows containing potential patterns for a misclassed (latent) covariate M in
+any coding for a categorical independent variable, e.g. dummy coding.}
 
-\item{P}{probabilities corresponding to each of the potential pattern conditional on the other covariates denoted in x.}
+\item{P}{probabilities corresponding to each of the potential pattern conditional on the other
+covariates denoted in x.}
 
 \item{na.action}{how to treat NAs}
 
-\item{control}{options for the optimization procedure (see \code{\link{optim}}, \code{\link{ucminf}} for options and details).}
+\item{control}{options for the optimization procedure (see \code{\link{optim}},
+\code{\link{ucminf}} for options and details).}
 
 \item{par}{(optional) starting parameter vector}
 
@@ -84,4 +95,3 @@ summary(boot.misclassMlogit(est,
 }
 
 }
-

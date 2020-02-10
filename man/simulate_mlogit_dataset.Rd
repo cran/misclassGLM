@@ -4,8 +4,13 @@
 \alias{simulate_mlogit_dataset}
 \title{Simulate a Data Set to Use With \code{misclassMlogit}}
 \usage{
-simulate_mlogit_dataset(n = 1000, const = c(0, 0), alpha = c(1, 2),
-  beta = -2 * c(1, 2), beta2 = NULL)
+simulate_mlogit_dataset(
+  n = 1000,
+  const = c(0, 0),
+  alpha = c(1, 2),
+  beta = -2 * c(1, 2),
+  beta2 = NULL
+)
 }
 \arguments{
 \item{n}{number observations}
@@ -16,7 +21,8 @@ simulate_mlogit_dataset(n = 1000, const = c(0, 0), alpha = c(1, 2),
 
 \item{beta}{parameters for M(1)}
 
-\item{beta2}{parameters for M2, if NULL, M is a binary covariate, otherwise a three-valued categorical}
+\item{beta2}{parameters for M2, if NULL, M is a binary covariate, otherwise a three-valued
+categorical.}
 }
 \description{
 simulates a data set with
@@ -31,4 +37,3 @@ see \code{misclassMlogit}.
 \seealso{
 \code{\link{misclassMlogit}}
 }
-

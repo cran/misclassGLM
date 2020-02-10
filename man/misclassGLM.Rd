@@ -3,35 +3,47 @@
 \docType{package}
 \name{misclassGLM}
 \alias{misclassGLM}
-\alias{misclassGLM-package}
 \title{misclassGLM}
 \usage{
-misclassGLM(Y, X, setM, P, na.action = na.omit, family = gaussian(link =
-  "identity"), control = list(), par = NULL, x = FALSE, robust = FALSE)
+misclassGLM(
+  Y,
+  X,
+  setM,
+  P,
+  na.action = na.omit,
+  family = gaussian(link = "identity"),
+  control = list(),
+  par = NULL,
+  x = FALSE,
+  robust = FALSE
+)
 }
 \arguments{
 \item{Y}{a vector of integers or numerics. This is the dependent variable.}
 
-\item{X}{a matrix containing the independent variables}
+\item{X}{a matrix containing the independent variables.}
 
-\item{setM}{matrix, rows containing potential patterns for a misclassified (latent) covariate M in any coding for a
-categorical independent variable, e.g. dummy coding.}
+\item{setM}{(optional) matrix, rows containing potential patterns for a misclassified (latent) covariate M
+in any coding for a categorical independent variable, e.g. dummy coding (default: Identity).}
 
-\item{P}{probabilities corresponding to each of the potential pattern conditional on the other covariates denoted in x.}
+\item{P}{probabilities corresponding to each of the potential pattern conditional on the other
+covariates denoted in x.}
 
 \item{na.action}{how to treat NAs}
 
 \item{family}{a description of the error distribution and link function to be used in the model.
-This can be a character string naming a family function, a family function or the result of a call to a
-family function. (See \code{\link{family}} for details of family functions.)}
+This can be a character string naming a family function, a family function or the result
+of a call to a family function. (See \code{\link{family}} for details of family functions.)}
 
-\item{control}{options for the optimization procedure (see \code{\link{optim}}, \code{\link{ucminf}} for options and details).}
+\item{control}{options for the optimization procedure (see \code{\link{optim}},
+\code{\link{ucminf}} for options and details).}
 
 \item{par}{(optional) starting parameter vector}
 
 \item{x}{logical, add covariates matrix to result?}
 
-\item{robust}{logical, if true the computed asymptotic standard errors are replaced by their robust counterparts}
+\item{robust}{logical, if true the computed asymptotic standard errors are replaced by their
+robust counterparts.}
 }
 \description{
 Estimates models that extend the standard GLM to take
@@ -96,4 +108,3 @@ summary(est)
 }
 
 }
-

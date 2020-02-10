@@ -1,5 +1,5 @@
-cfmlogitValidation <- function(par, Y, X, W, SetM) .Call("cfmlogitValidation", par, Y, X, W, SetM)
-cgmlogitValidation <- function(par, Y, X, W, SetM) .Call("cgmlogitValidation", par, Y, X, W, SetM)
+fmlogitValidation <- function(par, Y, X, W, SetM) .Call(cfmlogitValidation, par, Y, X, W, SetM)
+gmlogitValidation <- function(par, Y, X, W, SetM) .Call(cgmlogitValidation, par, Y, X, W, SetM)
 
 
 #predict.mlogit <- function(object, newdata, ...) {

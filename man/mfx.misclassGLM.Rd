@@ -9,7 +9,8 @@ mfx.misclassGLM(w, x.mean = TRUE, rev.dum = TRUE, digits = 3, ...)
 \arguments{
 \item{w}{a fitted object of class inheriting from 'misclassGLM'.}
 
-\item{x.mean}{logical, if true computes marginal effects at mean, otherwise average marginal effects.}
+\item{x.mean}{logical, if true computes marginal effects at mean, otherwise average marginal
+effects.}
 
 \item{rev.dum}{logical, if true, computes differential effects for switch from 0 to 1.}
 
@@ -23,4 +24,3 @@ Obtain marginal Effects.
 \seealso{
 \code{\link{misclassGLM}}
 }
-

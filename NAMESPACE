@@ -25,4 +25,4 @@ export(mfx.misclassMlogit)
 export(boot.misclassMlogit)
 export(simulate_mlogit_dataset)
 
-useDynLib(misclassGLM)
+useDynLib(misclassGLM, .registration = TRUE)

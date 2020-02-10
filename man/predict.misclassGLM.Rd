@@ -5,21 +5,22 @@
 \title{Predict Method for \code{misclassGLM} Fits}
 \usage{
 ## S3 method for class 'misclassGLM'
-       \method{predict}{misclassGLM}(object, X, P = NULL, type = c("link", "response"), na.action = na.pass, ...)
+       \method{predict}{misclassGLM}(object, X, P = NULL, type = c("link", "response"),
+                                     na.action = na.pass, ...)
 }
 \arguments{
 \item{object}{a fitted object of class inheriting from 'misclassGLM'.}
 
 \item{X}{matrix of fixed covariates}
 
-\item{P}{a-posteriori probabilities for the true values of the misclassified variable. If provided,
-the conditional expectation on X,P is computed, otherwise a set of marginal predictions is provided, one for
-each alternative.}
+\item{P}{a-posteriori probabilities for the true values of the misclassified variable.
+If provided, the conditional expectation on X,P is computed, otherwise a set of marginal
+predictions is provided, one for each alternative.}
 
 \item{type}{the type of prediction required. The default is on the scale of the linear predictors;
        the alternative "response" is on the scale of the response variable.
-       Thus for a default binomial model the default predictions are of log-odds (probabilities on logit scale) and
-       type = "response" gives the predicted probabilities.
+       Thus for a default binomial model the default predictions are of log-odds
+       (probabilities on logit scale) and type = "response" gives the predicted probabilities.
 
        The value of this argument can be abbreviated.}
 
@@ -34,4 +35,3 @@ Obtains predictions
 \seealso{
 \code{\link{misclassGLM}}
 }
-

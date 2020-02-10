@@ -4,8 +4,14 @@
 \alias{simulate_GLM_dataset}
 \title{Simulate a Data Set to Use With \code{misclassGLM}}
 \usage{
-simulate_GLM_dataset(n = 1000, const = 0, alpha = 1, beta = -2,
-  beta2 = NULL, logit = FALSE)
+simulate_GLM_dataset(
+  n = 50000,
+  const = 0,
+  alpha = 1,
+  beta = -2,
+  beta2 = NULL,
+  logit = FALSE
+)
 }
 \arguments{
 \item{n}{number observations}
@@ -16,7 +22,8 @@ simulate_GLM_dataset(n = 1000, const = 0, alpha = 1, beta = -2,
 
 \item{beta}{parameter for M(1)}
 
-\item{beta2}{parameter for M2, if NULL, M is a binary covariate, otherwise a three-valued categorical}
+\item{beta2}{parameter for M2, if NULL, M is a binary covariate, otherwise a three-valued
+categorical}
 
 \item{logit}{logical, if true logit regression, otherwise Gaussian regression}
 }
@@ -33,4 +40,3 @@ see \code{\link{misclassGLM}}.
 \seealso{
 \code{\link{misclassGLM}}
 }
-
