@@ -77,15 +77,9 @@ bootstrapping <- function(ret, Y, X, Pmodel, PX, f, g,
 
   cat("bootstrapping")
 
-  s <- as.big.matrix(matrix(as.integer(0), nrow = m, ncol = repetitions), type = "integer")#, backingfile="sbacking.bigmemory")
-  prep <- as.big.matrix(matrix(0.0, nrow = repetitions,
-                               ncol = length(Pmodel$coefficients)))#, backingfile="prepbacking.bigmemory")
-  sdescription <- describe(s)
-  prepdescription <- describe(prep)
-  Xdescription <- NULL
-  PXdescription <- NULL
-  if (is.big.matrix(X)) Xdescription <- describe(X)
-  if (is.big.matrix(PX)) PXdescription <- describe(PX)
+  s <- matrix(as.integer(0), nrow = m, ncol = repetitions)
+  prep <- matrix(0.0, nrow = repetitions,
+                      ncol = length(Pmodel$coefficients))
 
   for (i in 1:repetitions) {
     # ziehen
@@ -96,11 +90,7 @@ bootstrapping <- function(ret, Y, X, Pmodel, PX, f, g,
   `%op%` <- ifelse(getDoParWorkers() > 1, `%dopar%`, `%do%`)
 
   tmp <- foreach(i = 1:repetitions, .inorder = FALSE) %op% {
-    s <- attach.big.matrix(sdescription)
-    prep <- attach.big.matrix(prepdescription)
-    if (!is.null(Xdescription)) X <- attach.big.matrix(Xdescription)
-    if (!is.null(PXdescription)) PX <- attach.big.matrix(PXdescription)
-    si <- as.vector(sub.big.matrix(s, firstCol = i, lastCol = i)[,])
+    si <- s[,i]
 
     # P simulieren
     P <- simuliere.predict(Pmodel, newdata = PX, u, prep[i,, drop = TRUE], si)

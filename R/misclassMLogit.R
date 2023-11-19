@@ -211,7 +211,7 @@ predict.misclassMlogit <- function(object, X, P = NULL, type = c("link", "respon
 get.eta <- function(X, beta, k) {
   d <- ncol(X)
   ret <- do.call(cbind, lapply(1:k, function(l) {
-    X %*% beta[((0:d) * k) + l][-1] + beta[l]
+    X %*% beta[(1:d) + (d + 1)*(l - 1) + 1] + beta[1 + (d + 1)*(l - 1)]
   }))
   return(ret)
 }
@@ -248,7 +248,7 @@ boot.misclassMlogit <- function(ret, Y, X, Pmodel, PX,
     k <- 1
   }
 
-  if (!is.matrix(X) & (!is.big.matrix(X))) stop("X is no matrix")
+  if (!is.matrix(X)) stop("X is no matrix")
 
   # letzte Kategorie als Referenz
   # daher: umsortieren!

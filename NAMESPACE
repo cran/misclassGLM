@@ -1,7 +1,6 @@
 import(stats)
 import(MASS)
 import(Matrix)
-import(bigmemory)
 import(foreach)
 import(mlogit)
 import(numDeriv)

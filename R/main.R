@@ -241,7 +241,7 @@ boot.misclassGLM <- function(ret, Y, X, Pmodel, PX,
   if (boot.fraction > 1) stop("boot.fraction must be <1")
   if (boot.fraction <= 0) stop("boot.fraction must be >0")
 
-  if (!is.matrix(X) & (!is.big.matrix(X))) stop("X is no matrix")
+  if (!is.matrix(X)) stop("X is no matrix")
   if (!is.vector(Y)) stop("Y must be a vector")
   if (length(Y) != nrow(X)) stop("dimensions of Y and X do not match")
 
