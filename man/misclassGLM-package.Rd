@@ -3,9 +3,12 @@
 \docType{package}
 \name{misclassGLM-package}
 \alias{misclassGLM-package}
-\alias{_PACKAGE}
 \title{misclassGLM: Computation of Generalized Linear Models with Misclassified Covariates Using Side Information}
 \description{
-Estimates models that extend the standard GLM to take misclassification into account. The models require side information from a secondary data set on the misclassification process, i.e. some sort of misclassification probabilities conditional on some common covariates. A detailed description of the algorithm can be found in Dlugosz, Mammen and Wilke (2015) \url{https://www.zew.de/publikationen/generalised-partially-linear-regression-with-misclassified-data-and-an-application-to-labour-market-transitions}.
+Estimates models that extend the standard GLM to take misclassification into account. The models require side information from a secondary data set on the misclassification process, i.e. some sort of misclassification probabilities conditional on some common covariates. A detailed description of the algorithm can be found in Dlugosz, Mammen and Wilke (2015) \url{https://ftp.zew.de/pub/zew-docs/dp/dp15043.pdf}.
+}
+\author{
+\strong{Maintainer}: Stephan Dlugosz \email{stephan.dlugosz@googlemail.com}
+
 }
 \keyword{internal}

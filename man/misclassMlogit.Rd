@@ -30,7 +30,7 @@ covariates denoted in x.}
 \item{na.action}{how to treat NAs}
 
 \item{control}{options for the optimization procedure (see \code{\link{optim}},
-\code{\link{ucminf}} for options and details).}
+\code{\link[ucminf]{ucminf}} for options and details).}
 
 \item{par}{(optional) starting parameter vector}
 

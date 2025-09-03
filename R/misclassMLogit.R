@@ -11,7 +11,7 @@
 #'        covariates denoted in x.
 #' @param na.action how to treat NAs
 #' @param control options for the optimization procedure (see \code{\link{optim}},
-#'        \code{\link{ucminf}} for options and details).
+#'        \code{\link[ucminf]{ucminf}} for options and details).
 #' @param par (optional) starting parameter vector
 #' @param baseoutcome reference outcome class
 #' @param x logical, add covariates matrix to result?
